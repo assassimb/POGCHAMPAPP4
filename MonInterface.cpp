@@ -14,10 +14,9 @@
 #include <iostream>
 #include <fstream>
 
-
 using namespace std;
 
-MonInterface::MonInterface(const char * theName) : VisiTest(theName)
+MonInterface::MonInterface(const char *theName) : VisiTest(theName)
 {
 	donnee.typeTest = 1;
 	donnee.registreSW = SW;
@@ -31,6 +30,7 @@ MonInterface::MonInterface(const char * theName) : VisiTest(theName)
 
 	resetTest();
 	resetArchive();
+	setArchive(Archive.getindex(), Archive.gettaille());
 }
 
 void MonInterface::testSuivant()
@@ -42,6 +42,9 @@ void MonInterface::testSuivant()
 		donnee.typeTest = 3;
 	}
 
+	setArchive(donnee);
+	setArchive(donnee.registreLD, donnee.registreSW);
+
 	cout << hex << donnee.valeurLD << endl;
 
 	test();
@@ -50,11 +53,25 @@ void MonInterface::testSuivant()
 
 	if (sauvegarde == true)
 	{
-		setArchive(donnee);
-		setArchive(donnee.registreLD, donnee.registreSW);
+		DonneesTest *temp = new DonneesTest;
+
+		cout << "fonction de sauvegarde" << endl;
+
+		temp->typeTest = donnee.typeTest;
+
+		temp->registreSW = SW;
+		temp->registreLD = LD;
+
+		temp->retourSW = cfpga.LireSwitch();
+		temp->valeurLD = cfpga.LireSwitch();
+		temp->etatLD = cfpga.LireSwitch();
+		temp->etatSW = cfpga.LireSwitch();
+
+		Archive += temp;
+		setArchive(Archive.getindex() + 1, Archive.gettaille());
 	}
 
-   if(donnee.etatLD > 0x80)
+	if (donnee.etatLD > 0x80)
 	{
 		donnee.typeTest = 1;
 		donnee.retourSW = 1;
@@ -69,7 +86,7 @@ void MonInterface::testSuivant()
 		donnee.typeTest++;
 	}
 
-   message("bye");
+	message("bye");
 }
 
 bool MonInterface::test()
@@ -78,7 +95,7 @@ bool MonInterface::test()
 	{
 		echo();
 	}
-	
+
 	if (donnee.typeTest == 2)
 	{
 		parite();
@@ -108,17 +125,27 @@ bool MonInterface::parite()
 	donnee.etatSW = cfpga.LireSwitch();
 	int switchActive = 0;
 
-	if ((valeurSW & 128) == 128) switchActive++;
-	if ((valeurSW & 64) == 64) switchActive++;
-	if ((valeurSW & 32) == 32) switchActive++;
-	if ((valeurSW & 16) == 16) switchActive++;
-	if ((valeurSW & 8) == 8) switchActive++;
-	if ((valeurSW & 4) == 4) switchActive++;
-	if ((valeurSW & 2) == 2) switchActive++;
-	if ((valeurSW & 1) == 1) switchActive++;
+	if ((valeurSW & 128) == 128)
+		switchActive++;
+	if ((valeurSW & 64) == 64)
+		switchActive++;
+	if ((valeurSW & 32) == 32)
+		switchActive++;
+	if ((valeurSW & 16) == 16)
+		switchActive++;
+	if ((valeurSW & 8) == 8)
+		switchActive++;
+	if ((valeurSW & 4) == 4)
+		switchActive++;
+	if ((valeurSW & 2) == 2)
+		switchActive++;
+	if ((valeurSW & 1) == 1)
+		switchActive++;
 
-	if (switchActive == 0 || switchActive % 2 == 0) donnee.etatLD = 0xff;
-	if ((switchActive % 2) == 1) donnee.etatLD = 0;
+	if (switchActive == 0 || switchActive % 2 == 0)
+		donnee.etatLD = 0xff;
+	if ((switchActive % 2) == 1)
+		donnee.etatLD = 0;
 
 	donnee.valeurLD = donnee.etatLD;
 
@@ -128,54 +155,53 @@ bool MonInterface::parite()
 void MonInterface::arreter()
 {
 	sauvegarde = false;
+	cout << "arreter" << endl;
 }
 
 void MonInterface::demarrer()
 {
 	sauvegarde = true;
+	cout << "demarrage" << endl;
 }
 
 void MonInterface::vider()
 {
 	Archive.vider();
+	cout << "vider" << endl;
 }
 
-void  MonInterface::modeFile()
+void MonInterface::modeFile()
 {
 	modedesauvegarde = QUEUE;
 }
 
-void  MonInterface::modePile()
+void MonInterface::modePile()
 {
 	modedesauvegarde = PILE;
 }
 
-void  MonInterface::premier()
+void MonInterface::premier()
 {
 	Archive.setindex(0);
-	setArchive(*Archive.getactif());
-	setArchive(Archive.getindex() + 1, Archive.gettaille());
+	archivecourante();
 }
 
-void  MonInterface::dernier()
+void MonInterface::dernier()
 {
-	Archive.setindex(Archive.gettaille() -1);
-	setArchive(*Archive.getactif());
-	setArchive(Archive.getindex() + 1, Archive.gettaille());
+	Archive.setindex(Archive.gettaille() - 1);
+	archivecourante();
 }
 
-void  MonInterface::precedent()
+void MonInterface::precedent()
 {
 	Archive--;
-	setArchive(*Archive.getactif());
-	setArchive(Archive.getindex() + 1, Archive.gettaille());
+	archivecourante();
 }
 
-void  MonInterface::suivant()
+void MonInterface::suivant()
 {
 	Archive++;
-	setArchive(*Archive.getactif());
-	setArchive(Archive.getindex() + 1, Archive.gettaille());
+	archivecourante();
 }
 
 /*void  MonInterface::sauvegarder(char* nomFichier)
@@ -189,5 +215,13 @@ void  MonInterface::suivant()
 
 void MonInterface::quitter()
 {
+}
 
+void MonInterface::archivecourante()
+{
+	if (Archive.getactif() != NULL)
+	{
+		setArchive(*Archive.getactif());
+	}
+	setArchive(Archive.getindex() + 1, Archive.gettaille());
 }
