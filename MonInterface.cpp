@@ -12,16 +12,18 @@
 #include <QStyleFactory>
 #include "MonInterface.h"
 #include <iostream>
+#include <fstream>
+
 
 using namespace std;
 
 MonInterface::MonInterface(const char * theName) : VisiTest(theName)
 {
 	donnee.typeTest = 1;
-	donnee.registreSW = 1;
+	donnee.registreSW = SW;
 	donnee.retourSW = 1;
 
-	donnee.registreLD = 1;
+	donnee.registreLD = LD;
 	donnee.valeurLD = 1;
 
 	donnee.etatLD = 1;
@@ -40,26 +42,23 @@ void MonInterface::testSuivant()
 		donnee.typeTest = 3;
 	}
 
-	setTest(donnee);
+	cout << hex << donnee.valeurLD << endl;
 
 	test();
 
-	if (archiveActivee == true)
+	setTest(donnee);
+
+	if (sauvegarde == true)
 	{
 		setArchive(donnee);
 		setArchive(donnee.registreLD, donnee.registreSW);
 	}
 
-	cout << hex << donnee.valeurLD << endl;
-
    if(donnee.etatLD > 0x80)
 	{
 		donnee.typeTest = 1;
-
-		donnee.registreSW = 1;
 		donnee.retourSW = 1;
 
-		donnee.registreLD = 1;
 		donnee.valeurLD = 1;
 
 		donnee.etatLD = 1;
@@ -69,10 +68,8 @@ void MonInterface::testSuivant()
 	{
 		donnee.typeTest++;
 		
-		donnee.registreSW++;
 		donnee.retourSW <<= 1;
 
-		donnee.registreLD++;
 		donnee.valeurLD <<= 1;
 
 		donnee.etatLD <<= 1;
@@ -88,13 +85,13 @@ bool MonInterface::test()
 	{
 		echo();
 	}
-
+	
 	if (donnee.typeTest == 2)
 	{
 		return false;
 	}
 
-	if (donnee.typeTest == 3)
+	else
 	{
 		return false;
 	}
@@ -102,25 +99,87 @@ bool MonInterface::test()
 
 bool MonInterface::echo()
 {
-	donnee.registreSW = 8;
+	donnee.registreSW = SW;
+	donnee.registreLD = LD;
+
+	int activeSwitches = 0;
 
 	donnee.retourSW = cfpga.LireSwitch();
-	donnee.registreLD = 10;
+	donnee.valeurLD = cfpga.LireSwitch();
 
+	if()
+
+	donnee.retourSW = cfpga.LireSwitch();
 	donnee.valeurLD = cfpga.LireSwitch();
 	donnee.etatSW = cfpga.LireSwitch();
 	donnee.etatLD = cfpga.LireSwitch();
 
-	return 0;
+	return true;
 }
 
 void MonInterface::arreter()
 {
-	archiveActivee = false;
+	sauvegarde = false;
 }
 
 void MonInterface::demarrer()
 {
-	archiveActivee = true;
+	sauvegarde = true;
 }
 
+void MonInterface::vider()
+{
+	Archive.vider();
+}
+
+void  MonInterface::modeFile()
+{
+	modedesauvegarde = QUEUE;
+}
+
+void  MonInterface::modePile()
+{
+	modedesauvegarde = PILE;
+}
+
+void  MonInterface::premier()
+{
+	Archive.setindex(0);
+	setArchive(*Archive.getactif());
+	setArchive(Archive.getindex() + 1, Archive.gettaille());
+}
+
+void  MonInterface::dernier()
+{
+	Archive.setindex(Archive.gettaille() -1);
+	setArchive(*Archive.getactif());
+	setArchive(Archive.getindex() + 1, Archive.gettaille());
+}
+
+void  MonInterface::precedent()
+{
+	Archive--;
+	setArchive(*Archive.getactif());
+	setArchive(Archive.getindex() + 1, Archive.gettaille());
+}
+
+void  MonInterface::suivant()
+{
+	Archive++;
+	setArchive(*Archive.getactif());
+	setArchive(Archive.getindex() + 1, Archive.gettaille());
+}
+
+/*void  MonInterface::sauvegarder(char* nomFichier)
+{
+	ofstream ofs(nomFichier);
+	ofs << Archive;
+	ofs.close();
+	cout << "Archive : ---- " << endl << Archive << endl;
+	cout << "Archive[0] : ---- " << endl << Archive[0] << endl;
+}*/
+
+void MonInterface::quitter()
+{
+
+}

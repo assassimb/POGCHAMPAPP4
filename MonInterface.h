@@ -11,35 +11,43 @@
 */
 #ifndef MONINTERFACE_H
 #define MONINTERFACE_H
+#define PILE 0
+#define QUEUE 1
 
 #include "VisiTest.h"
 #include "macarte.h"
+#include "vecteur.h"
+
 
 class MonInterface : public VisiTest
 {
 public:
-	MonInterface(const char *theName);
+	MonInterface(const char* theName);
+	void demarrer();
 public slots:
-	virtual	void testSuivant();
-	virtual void demarrer();
-	virtual void arreter();
-	/*virtual void vider();
-	virtual void modeFile();
-	virtual void modePile();
+	void testSuivant();
+	void arreter();
+	void vider();
+	void modeFile();
+	void modePile();
 
-	virtual void premier();
-	virtual void dernier();
-	virtual void precedent();
-	virtual void suivant();
+	void premier();
+	void dernier();
+	void precedent();
+	void suivant();
 
-	void sauvegarder();
-	void quitter();*/
-	bool echo();
+	//void sauvegarder(char* nomFichier);
+	void quitter();
+
 	bool test();
+	bool echo();
 private:
 	DonneesTest donnee;
 	Macarte cfpga;
 	bool archiveActivee;
+	bool sauvegarde = false;
+	bool modedesauvegarde = PILE;
+	vecteur<DonneesTest*> Archive;
 };
 
 #endif // MONINTERFACE_H

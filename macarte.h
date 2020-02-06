@@ -18,18 +18,17 @@ public:
 	
 	int LireSwitch()
 	{
-		
-		int valeur = 0;
+		int valeur;
 		lireRegistre(SW, valeur);
-		cout << "valSW: " << valeur << " hexvalSW: " << hex << valeur << endl;
+		cout << "valSW: " << dec << valeur << " hexvalSW: "<< hex << valeur << endl;
 		return valeur;
 	}
 
 	int LireBoutons() 
 	{
-		int valeur = 0;
+		int valeur;
 		lireRegistre(BTN, valeur);
-		cout << "valBTN: " << valeur << " hexvalBTN: " << hex << valeur << endl;
+		cout << "valBTN: " << dec << valeur << " hexvalBTN: " << hex << valeur << endl;
 		return valeur;
 	}
 };

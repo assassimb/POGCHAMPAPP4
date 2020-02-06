@@ -1,4 +1,7 @@
 *.vs
 *.pro
-debug
-release
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+debug/
+release/
