@@ -56,6 +56,9 @@
     <ClInclude Include="vecteur.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="macarte.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="debug\moc_VisiTest.cpp">

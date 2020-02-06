@@ -13,6 +13,7 @@
 #define MONINTERFACE_H
 
 #include "VisiTest.h"
+#include "macarte.h"
 
 class MonInterface : public VisiTest
 {
@@ -37,6 +38,7 @@ public slots:
 	bool test();
 private:
 	DonneesTest donnee;
+	Macarte cfpga;
 	bool archiveActivee;
 };
 

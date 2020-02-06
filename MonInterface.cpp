@@ -12,11 +12,8 @@
 #include <QStyleFactory>
 #include "MonInterface.h"
 #include <iostream>
-#include "CommunicationFPGA.h"
 
 using namespace std;
-
-enum Registre { SW = 8, BTN = 9, LD = 10, AN0 = 11, AN1 = 12, AN2 = 13, AN3 = 14 };
 
 MonInterface::MonInterface(const char * theName) : VisiTest(theName)
 {
@@ -105,25 +102,14 @@ bool MonInterface::test()
 
 bool MonInterface::echo()
 {
-	CommunicationFPGA fpga;
-	int val;
+	donnee.registreSW = 8;
 
-	if (!fpga.estOk())
-	{
-		cout << fpga.messageErreur() << endl;
-		return 1;
-	}
+	donnee.retourSW = cfpga.LireSwitch();
+	donnee.registreLD = 10;
 
-	if (!fpga.lireRegistre(SW, val))
-	{
-		cout << fpga.messageErreur() << endl;
-		return 1;
-	}
-
-	fpga.ecrireRegistre(SW, val);
-	donnee.retourSW = val;
-
-	cout << "SW: " << hex << val << endl;
+	donnee.valeurLD = cfpga.LireSwitch();
+	donnee.etatSW = cfpga.LireSwitch();
+	donnee.etatLD = cfpga.LireSwitch();
 
 	return 0;
 }
