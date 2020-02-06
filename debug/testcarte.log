@@ -1,3 +1,12 @@
 ﻿  MonInterface.cpp
-C:\Users\Assim\Documents\Homework\AAAAAAAAAAHHHHH\MonInterface.cpp(104): warning C4715: 'MonInterface::test': not all control paths return a value
-  testcarte.vcxproj -> C:\Users\Assim\Documents\Homework\AAAAAAAAAAHHHHH\debug\testcarte.exe
+D:\coding\CODES\app3s2\fixedpog\vecteur.h(203,35): warning C4100: 'dt': unreferenced formal parameter
+D:\coding\CODES\app3s2\fixedpog\vecteur.h(204): message : while compiling class template member function 'void vecteur<DonneesTest *>::operator ++(int)'
+D:\coding\CODES\app3s2\fixedpog\MonInterface.cpp(179): message : see reference to function template instantiation 'void vecteur<DonneesTest *>::operator ++(int)' being compiled
+D:\coding\CODES\app3s2\fixedpog\MonInterface.h(46): message : see reference to class template instantiation 'vecteur<DonneesTest *>' being compiled
+D:\coding\CODES\app3s2\fixedpog\vecteur.h(212,35): warning C4100: 'dt': unreferenced formal parameter
+D:\coding\CODES\app3s2\fixedpog\vecteur.h(213): message : while compiling class template member function 'void vecteur<DonneesTest *>::operator --(int)'
+D:\coding\CODES\app3s2\fixedpog\MonInterface.cpp(172): message : see reference to function template instantiation 'void vecteur<DonneesTest *>::operator --(int)' being compiled
+  Test.cpp
+  Generating Code...
+D:\coding\CODES\app3s2\fixedpog\MonInterface.cpp(104): warning C4715: 'MonInterface::test': not all control paths return a value
+  testcarte.vcxproj -> D:\coding\CODES\app3s2\fixedpog\debug\testcarte.exe

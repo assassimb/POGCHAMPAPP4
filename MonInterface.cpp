@@ -12,7 +12,8 @@
 #include <QStyleFactory>
 #include "MonInterface.h"
 #include <iostream>
-#include "CommunicationFPGA.h"
+//#include "CommunicationFPGA.h"
+#include <fstream>
 
 using namespace std;
 
@@ -45,9 +46,8 @@ void MonInterface::testSuivant()
 
 	setTest(donnee);
 
-	test();
 
-	if (archiveActivee == true)
+	if (sauvegarde == true)
 	{
 		setArchive(donnee);
 		setArchive(donnee.registreLD, donnee.registreSW);
@@ -87,11 +87,11 @@ void MonInterface::testSuivant()
 
 bool MonInterface::test()
 {
-	if (donnee.typeTest == 1)
+	/*if (donnee.typeTest == 1)
 	{
 		echo();
 	}
-
+	*/
 	if (donnee.typeTest == 2)
 	{
 		return false;
@@ -103,7 +103,7 @@ bool MonInterface::test()
 	}
 }
 
-bool MonInterface::echo()
+/*bool MonInterface::echo()
 {
 	CommunicationFPGA fpga;
 	int val;
@@ -126,15 +126,71 @@ bool MonInterface::echo()
 	cout << "SW: " << hex << val << endl;
 
 	return 0;
-}
+}*/
 
 void MonInterface::arreter()
 {
-	archiveActivee = false;
+	sauvegarde = false;
 }
 
 void MonInterface::demarrer()
 {
-	archiveActivee = true;
+	sauvegarde = true;
 }
 
+void MonInterface::vider()
+{
+	Archive.vider();
+}
+
+void  MonInterface::modeFile()
+{
+	modedesauvegarde = QUEUE;
+}
+
+void  MonInterface::modePile()
+{
+	modedesauvegarde = PILE;
+}
+
+void  MonInterface::premier()
+{
+	Archive.setindex(0);
+	setArchive(*Archive.getactif());
+	setArchive(Archive.getindex() + 1, Archive.gettaille());
+}
+
+void  MonInterface::dernier()
+{
+	Archive.setindex(Archive.gettaille() -1);
+	setArchive(*Archive.getactif());
+	setArchive(Archive.getindex() + 1, Archive.gettaille());
+}
+
+void  MonInterface::precedent()
+{
+	Archive--;
+	setArchive(*Archive.getactif());
+	setArchive(Archive.getindex() + 1, Archive.gettaille());
+}
+
+void  MonInterface::suivant()
+{
+	Archive++;
+	setArchive(*Archive.getactif());
+	setArchive(Archive.getindex() + 1, Archive.gettaille());
+}
+
+/*void  MonInterface::sauvegarder(char* nomFichier)
+{
+	ofstream ofs(nomFichier);
+	ofs << Archive;
+	ofs.close();
+	cout << "Archive : ---- " << endl << Archive << endl;
+	cout << "Archive[0] : ---- " << endl << Archive[0] << endl;
+}*/
+
+void MonInterface::quitter()
+{
+
+}

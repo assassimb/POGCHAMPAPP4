@@ -4,6 +4,12 @@
 #include <iostream>
 using namespace std;
 
+template<class T>
+class vecteur;
+
+template<class T>
+ostream& operator<<(ostream& os, vecteur<T>& dt);
+
 template <class T>
 class vecteur
 {
@@ -21,7 +27,7 @@ public:
 	T get(int);
 	void vider();
 	int doublecapacite();
-	friend ostream& operator << <> (ostream& os, vecteur<T>& dt);
+	friend ostream& operator << (ostream& os, vecteur<T>& dt);
 	void operator += (T);
 	void operator ++ (int);
 	void operator -- (int);
@@ -35,75 +41,6 @@ private:
 	int taille;
 	int index;
 };
-
-template <class T>
-ostream& operator << <> (ostream& os, vecteur<T>& dt)
-{
-	taille = index.gettaille();
-	for (int i = 0; i < taille; i++)
-	{
-		os << resultat[i] << endl;
-	}
-	return os;
-}
-
-template <class T>
-void vecteur<T>::operator += (T donnee)
-{
-	if (taille == capacite)
-	{
-		capacite = doublecapacite();
-	}
-	resultat[taille] = donnee;
-	taille++;
-}
-
-template <class T>
-void vecteur<T>::operator ++ (int dt)
-{
-	if (index < taille - 1)
-	{
-		index++;
-	}
-}
-
-template <class T>
-void vecteur<T>::operator -- (int dt)
-{
-	if (index > 0)
-	{
-		index--;
-	}
-}
-
-template<class T>
-void vecteur<T>::operator ++()
-{
-	if (index < taille - 1)
-	{
-		index++;
-	}
-}
-
-template<class T>
-void vecteur<T>::operator --()
-{
-	if (index > 0)
-	{
-		index--;
-	}
-}
-
-template <class T>
-T vecteur<T>::operator [] (int index)
-{
-	if (index >= taille || index < 0)
-	{
-		return NULL;
-	}
-	return resultat[index];
-}
-
 
 
 template <class T>
@@ -241,4 +178,70 @@ T vecteur<T>::getactif()
 	return resultat[index];
 }
 
+template <class T>
+ostream& operator << (ostream& os, vecteur<T>& dt)
+{
+	for (int i = 0; i < taille; i++)
+	{
+		os << resultat[i] << endl;
+	}
+	return os;
+}
+
+template <class T>
+void vecteur<T>::operator += (T donnee)
+{
+	if (taille == capacite)
+	{
+		capacite = doublecapacite();
+	}
+	resultat[taille] = donnee;
+	taille++;
+}
+
+template <class T>
+void vecteur<T>::operator ++ (int dt)
+{
+	if (index < taille - 1)
+	{
+		index++;
+	}
+}
+
+template <class T>
+void vecteur<T>::operator -- (int dt)
+{
+	if (index > 0)
+	{
+		index--;
+	}
+}
+
+template<class T>
+void vecteur<T>::operator ++()
+{
+	if (index < taille - 1)
+	{
+		index++;
+	}
+}
+
+template<class T>
+void vecteur<T>::operator --()
+{
+	if (index > 0)
+	{
+		index--;
+	}
+}
+
+template <class T>
+T vecteur<T>::operator [] (int index)
+{
+	if (index >= taille || index < 0)
+	{
+		return NULL;
+	}
+	return resultat[index];
+}
 #endif
