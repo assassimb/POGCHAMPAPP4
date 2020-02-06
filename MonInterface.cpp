@@ -67,13 +67,6 @@ void MonInterface::testSuivant()
 	else
 	{
 		donnee.typeTest++;
-		
-		donnee.retourSW <<= 1;
-
-		donnee.valeurLD <<= 1;
-
-		donnee.etatLD <<= 1;
-		donnee.etatSW <<= 1;
 	}
 
    message("bye");
@@ -88,7 +81,7 @@ bool MonInterface::test()
 	
 	if (donnee.typeTest == 2)
 	{
-		return false;
+		parite();
 	}
 
 	else
@@ -99,20 +92,35 @@ bool MonInterface::test()
 
 bool MonInterface::echo()
 {
-	donnee.registreSW = SW;
-	donnee.registreLD = LD;
-
-	int activeSwitches = 0;
-
-	donnee.retourSW = cfpga.LireSwitch();
-	donnee.valeurLD = cfpga.LireSwitch();
-
-	if()
 
 	donnee.retourSW = cfpga.LireSwitch();
 	donnee.valeurLD = cfpga.LireSwitch();
 	donnee.etatSW = cfpga.LireSwitch();
 	donnee.etatLD = cfpga.LireSwitch();
+
+	return true;
+}
+
+bool MonInterface::parite()
+{
+	int valeurSW = cfpga.LireSwitch();
+	donnee.retourSW = cfpga.LireSwitch();
+	donnee.etatSW = cfpga.LireSwitch();
+	int switchActive = 0;
+
+	if ((valeurSW & 128) == 128) switchActive++;
+	if ((valeurSW & 64) == 64) switchActive++;
+	if ((valeurSW & 32) == 32) switchActive++;
+	if ((valeurSW & 16) == 16) switchActive++;
+	if ((valeurSW & 8) == 8) switchActive++;
+	if ((valeurSW & 4) == 4) switchActive++;
+	if ((valeurSW & 2) == 2) switchActive++;
+	if ((valeurSW & 1) == 1) switchActive++;
+
+	if (switchActive == 0 || switchActive % 2 == 0) donnee.etatLD = 0xff;
+	if ((switchActive % 2) == 1) donnee.etatLD = 0;
+
+	donnee.valeurLD = donnee.etatLD;
 
 	return true;
 }

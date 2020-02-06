@@ -21,6 +21,7 @@ public:
 		int valeur;
 		lireRegistre(SW, valeur);
 		cout << "valSW: " << dec << valeur << " hexvalSW: "<< hex << valeur << endl;
+		ecrireRegistre(LD, valeur);
 		return valeur;
 	}
 

@@ -41,6 +41,7 @@ public slots:
 
 	bool test();
 	bool echo();
+	bool parite();
 private:
 	DonneesTest donnee;
 	Macarte cfpga;
