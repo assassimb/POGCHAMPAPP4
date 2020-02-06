@@ -1,4 +1,4 @@
-#ifndef MACARTE_H
+/*#ifndef MACARTE_H
 #define MACARTE_H
 
 #include "CommunicationFPGA.h"
@@ -21,7 +21,6 @@ public:
 		int valeur;
 		lireRegistre(SW, valeur);
 		cout << "valSW: " << dec << valeur << " hexvalSW: "<< hex << valeur << endl;
-		ecrireRegistre(LD, valeur);
 		return valeur;
 	}
 
@@ -32,5 +31,5 @@ public:
 		cout << "valBTN: " << dec << valeur << " hexvalBTN: " << hex << valeur << endl;
 		return valeur;
 	}
-};
-#endif 
+};*/
+//#endif 
