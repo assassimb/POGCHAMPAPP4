@@ -1,0 +1,3 @@
+﻿  MonInterface.cpp
+C:\Users\Assim\Documents\Homework\AAAAAAAAAAHHHHH\MonInterface.cpp(104): warning C4715: 'MonInterface::test': not all control paths return a value
+  testcarte.vcxproj -> C:\Users\Assim\Documents\Homework\AAAAAAAAAAHHHHH\debug\testcarte.exe

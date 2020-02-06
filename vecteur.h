@@ -12,13 +12,22 @@ public:
 	~vecteur();
 	int getcapacite();
 	int gettaille();
+	int getindex();
+	void setindex(int);
+	T getactif();
 	int estvide();
 	bool ajouter(T);
-	T* retirer(int);
-	T* get(int);
+	T retirer(int);
+	T get(int);
 	void vider();
 	int doublecapacite();
-	void afficher(ostream& s);
+	friend ostream& operator << <> (ostream& os, vecteur<T>& dt);
+	void operator += (T);
+	void operator ++ (int);
+	void operator -- (int);
+	void operator ++();
+	void operator --();
+	T operator [] (int);
 
 private:
 	T* resultat;
@@ -28,11 +37,82 @@ private:
 };
 
 template <class T>
+ostream& operator << <> (ostream& os, vecteur<T>& dt)
+{
+	taille = index.gettaille();
+	for (int i = 0; i < taille; i++)
+	{
+		os << resultat[i] << endl;
+	}
+	return os;
+}
+
+template <class T>
+void vecteur<T>::operator += (T donnee)
+{
+	if (taille == capacite)
+	{
+		capacite = doublecapacite();
+	}
+	resultat[taille] = donnee;
+	taille++;
+}
+
+template <class T>
+void vecteur<T>::operator ++ (int dt)
+{
+	if (index < taille - 1)
+	{
+		index++;
+	}
+}
+
+template <class T>
+void vecteur<T>::operator -- (int dt)
+{
+	if (index > 0)
+	{
+		index--;
+	}
+}
+
+template<class T>
+void vecteur<T>::operator ++()
+{
+	if (index < taille - 1)
+	{
+		index++;
+	}
+}
+
+template<class T>
+void vecteur<T>::operator --()
+{
+	if (index > 0)
+	{
+		index--;
+	}
+}
+
+template <class T>
+T vecteur<T>::operator [] (int index)
+{
+	if (index >= taille || index < 0)
+	{
+		return NULL;
+	}
+	return resultat[index];
+}
+
+
+
+template <class T>
 vecteur<T>::vecteur()
 {
 	resultat = new T[1];
 	taille = 0;
 	capacite = 1;
+	index = 0;
 }
 
 template <class T>
@@ -83,7 +163,6 @@ void vecteur<T>::vider()
 		resultat[i] = NULL;
 	}
 	taille = 0;
-	delete[] resultat;
 }
 
 template <class T>
@@ -101,21 +180,21 @@ int vecteur<T>::estvide()
 }
 
 template <class T>
-bool vecteur<T>::ajouter(T in)
+bool vecteur<T>::ajouter(T donnee)
 {
 	if (taille == capacite)
 	{
 		capacite = doublecapacite();
 	}
 
-	resultat[taille] = in;
+	resultat[taille] = donnee;
 	taille++;
 
 	return true;
 }
 
 template <class T>
-T* vecteur<T>::retirer(int index)
+T vecteur<T>::retirer(int index)
 {
 	taille = gettaille();
 	T* retirer = resultat[index];
@@ -130,9 +209,14 @@ T* vecteur<T>::retirer(int index)
 }
 
 template <class T>
-T* vecteur<T>::get(int index)
+T vecteur<T>::get(int index)
 {
 	T* specifier;
+
+	if (index >= size || index < 0)
+	{
+		return nullptr;
+	}
 
 	specifier = resultat[index];
 
@@ -140,12 +224,21 @@ T* vecteur<T>::get(int index)
 }
 
 template <class T>
-void vecteur<T>::afficher(ostream& s)
+int vecteur<T>::getindex()
 {
-	for (int i = 0; i < taille; i++)
-	{
-		resultat[i]->afficher(cout);
-	}
+	return index;
+}
+
+template <class T>
+void vecteur<T>::setindex(int i)
+{
+	index = i;
+}
+
+template<class T>
+T vecteur<T>::getactif()
+{
+	return resultat[index];
 }
 
 #endif
