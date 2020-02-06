@@ -24,7 +24,6 @@ class MonInterface : public VisiTest
 public:
 	MonInterface(const char* theName);
 	void demarrer();
-	void archivecourante();
 public slots:
 	void testSuivant();
 	void arreter();
@@ -42,6 +41,7 @@ public slots:
 
 	bool test();
 	bool echo();
+	bool parite();
 private:
 	DonneesTest donnee;
 	Macarte cfpga;
