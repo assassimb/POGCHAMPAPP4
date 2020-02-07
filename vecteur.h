@@ -11,7 +11,7 @@ template<class T>
 class vecteur;
 
 template<class T>
-ostream& operator<<(ostream& os, vecteur<T>& dt);
+ostream& operator<<(ostream &os, vecteur<T> &dt);
 
 template <class T>
 class vecteur
@@ -32,12 +32,12 @@ public:
 	int doublecapacite();
 	void droite();
 	void setmode(int);
-	friend ostream& operator << (ostream& os, vecteur<T>& dt);
 	void operator += (T);
 	void operator ++ (int);
 	void operator -- (int);
 	void operator ++();
 	void operator --();
+	friend ostream& operator<< <> (ostream &os, vecteur<T> &dt);
 	T operator [] (int);
 
 private:
@@ -194,9 +194,9 @@ T vecteur<T>::getactif()
 template <class T>
 ostream& operator << (ostream& os, vecteur<T>& dt)
 {
-	for (int i = 0; i < taille; i++)
+	for (int i = 0; i < dt.taille; i++)
 	{
-		os << resultat[i] << endl;
+		os << dt.resultat[i] << endl;
 	}
 	return os;
 }
@@ -290,27 +290,27 @@ void vecteur<T>::droite()
 	resultat = temp;
 }
 
-/*ostream& operator<<(ostream& s, const DonneesTest* donnees)
-{
-	s << "Type test : " << donnees->typeTest << endl
-		<< "Adresse switches : " << dec << donnees->registreSW << endl
-		<< "Retour switches : " << dec << donnees->retourSW << " (" << hex << donnees->retourSW << ")" << endl
-		<< "Etat switches : " << dec << donnees->etatSW << " (" << hex << donnees->etatSW << ")" << endl
-		<< "Adresse leds : " << dec << donnees->registreLD << endl
-		<< "Valeur leds : " << dec << donnees->valeurLD << " (" << hex << donnees->valeurLD << ")" << endl
-		<< "Etat leds : " << dec << donnees->etatLD << " (" << hex << donnees->etatLD << ")" << endl;
-	return s;
-}
-
-ostream& operator<<(ostream& s, const DonneesTest& donnees)
-{
-	s << "Type test : " << donnees.typeTest << endl
-		<< "Adresse switches : " << donnees.registreSW << endl
-		<< "Retour switches : " << donnees.retourSW << " (" << hex << donnees.retourSW << ")" << endl
-		<< "Etat switches : " << donnees.etatSW << " (" << hex << donnees.etatSW << ")" << endl
-		<< "Adresse leds : " << donnees.registreLD << endl
-		<< "Valeur leds : " << donnees.valeurLD << " (" << hex << donnees.valeurLD << ")" << endl
-		<< "Etat leds : " << donnees.etatLD << " (" << hex << donnees.etatLD << ")" << endl;
-	return s;
-}*/
+//ostream& operator<<(ostream& s, const DonneesTest* donnees)
+//{
+//	s << "Type test : " << donnees->typeTest << endl
+//		<< "Adresse switches : " << dec << donnees->registreSW << endl
+//		<< "Retour switches : " << dec << donnees->retourSW << " (" << hex << donnees->retourSW << ")" << endl
+//		<< "Etat switches : " << dec << donnees->etatSW << " (" << hex << donnees->etatSW << ")" << endl
+//		<< "Adresse leds : " << dec << donnees->registreLD << endl
+//		<< "Valeur leds : " << dec << donnees->valeurLD << " (" << hex << donnees->valeurLD << ")" << endl
+//		<< "Etat leds : " << dec << donnees->etatLD << " (" << hex << donnees->etatLD << ")" << endl;
+//	return s;
+//}
+//
+//ostream& operator<<(ostream& s, const DonneesTest& donnees)
+//{
+//	s << "Type test : " << donnees.typeTest << endl
+//		<< "Adresse switches : " << donnees.registreSW << endl
+//		<< "Retour switches : " << donnees.retourSW << " (" << hex << donnees.retourSW << ")" << endl
+//		<< "Etat switches : " << donnees.etatSW << " (" << hex << donnees.etatSW << ")" << endl
+//		<< "Adresse leds : " << donnees.registreLD << endl
+//		<< "Valeur leds : " << donnees.valeurLD << " (" << hex << donnees.valeurLD << ")" << endl
+//		<< "Etat leds : " << donnees.etatLD << " (" << hex << donnees.etatLD << ")" << endl;
+//	return s;
+//}
 #endif

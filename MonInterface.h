@@ -37,7 +37,7 @@ public slots:
 	void precedent();
 	void suivant();
 
-	//void sauvegarder(char*);
+	//void sauvegarder(char* nomFichier);
 	void quitter();
 
 	bool test();
