@@ -1,7 +1,10 @@
+#include <iostream>
+
 #ifndef VECTEUR_H
 #define VECTEUR_H
+#define PILE 0
+#define QUEUE 1
 
-#include <iostream>
 using namespace std;
 
 template<class T>
@@ -27,6 +30,8 @@ public:
 	T get(int);
 	void vider();
 	int doublecapacite();
+	void droite();
+	void setmode(int);
 	friend ostream& operator << (ostream& os, vecteur<T>& dt);
 	void operator += (T);
 	void operator ++ (int);
@@ -40,6 +45,7 @@ private:
 	int capacite;
 	int taille;
 	int index;
+	int mode;
 };
 
 
@@ -100,6 +106,7 @@ void vecteur<T>::vider()
 		resultat[i] = NULL;
 	}
 	taille = 0;
+	index = 0;
 }
 
 template <class T>
@@ -134,7 +141,13 @@ template <class T>
 T vecteur<T>::retirer(int index)
 {
 	taille = gettaille();
-	T* retirer = resultat[index];
+
+	if (index >= taille || index < 0)
+	{
+		return NULL;
+	}
+
+	T retirer = resultat[index];
 
 	for (int i = index; i < (taille - 1); i++)
 	{
@@ -195,8 +208,18 @@ void vecteur<T>::operator += (T donnee)
 	{
 		capacite = doublecapacite();
 	}
-	resultat[taille] = donnee;
-	taille++;
+
+	if (mode == QUEUE || taille < 1)
+	{
+		resultat[taille] = donnee;
+		taille++;
+	}
+	else if (mode == PILE && taille > 0)
+	{
+		droite();
+		resultat[0] = donnee;
+		taille++;
+	}
 }
 
 template <class T>
@@ -244,4 +267,50 @@ T vecteur<T>::operator [] (int index)
 	}
 	return resultat[index];
 }
+
+template<class T>
+void vecteur<T>::setmode(int i)
+{
+	mode = i;
+}
+
+template<class T>
+void vecteur<T>::droite()
+{
+	if (taille == capacite)
+	{
+		capacite = doublecapacite();
+	}
+	T* temp = new T[capacite];
+	for (int i = 0; i < taille; i++)
+	{
+		temp[i + 1] = resultat[i];
+	}
+	delete resultat;
+	resultat = temp;
+}
+
+/*ostream& operator<<(ostream& s, const DonneesTest* donnees)
+{
+	s << "Type test : " << donnees->typeTest << endl
+		<< "Adresse switches : " << dec << donnees->registreSW << endl
+		<< "Retour switches : " << dec << donnees->retourSW << " (" << hex << donnees->retourSW << ")" << endl
+		<< "Etat switches : " << dec << donnees->etatSW << " (" << hex << donnees->etatSW << ")" << endl
+		<< "Adresse leds : " << dec << donnees->registreLD << endl
+		<< "Valeur leds : " << dec << donnees->valeurLD << " (" << hex << donnees->valeurLD << ")" << endl
+		<< "Etat leds : " << dec << donnees->etatLD << " (" << hex << donnees->etatLD << ")" << endl;
+	return s;
+}
+
+ostream& operator<<(ostream& s, const DonneesTest& donnees)
+{
+	s << "Type test : " << donnees.typeTest << endl
+		<< "Adresse switches : " << donnees.registreSW << endl
+		<< "Retour switches : " << donnees.retourSW << " (" << hex << donnees.retourSW << ")" << endl
+		<< "Etat switches : " << donnees.etatSW << " (" << hex << donnees.etatSW << ")" << endl
+		<< "Adresse leds : " << donnees.registreLD << endl
+		<< "Valeur leds : " << donnees.valeurLD << " (" << hex << donnees.valeurLD << ")" << endl
+		<< "Etat leds : " << donnees.etatLD << " (" << hex << donnees.etatLD << ")" << endl;
+	return s;
+}*/
 #endif

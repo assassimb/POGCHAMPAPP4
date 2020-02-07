@@ -42,10 +42,7 @@ void MonInterface::testSuivant()
 		donnee.typeTest = 3;
 	}
 
-	setArchive(donnee);
-	setArchive(donnee.registreLD, donnee.registreSW);
-
-	cout << hex << donnee.valeurLD << endl;
+	//cout << hex << donnee.valeurLD << endl;
 
 	test();
 
@@ -71,6 +68,7 @@ void MonInterface::testSuivant()
 		setArchive(Archive.getindex() + 1, Archive.gettaille());
 	}
 
+	
 	if (donnee.etatLD > 0x80)
 	{
 		donnee.typeTest = 1;
@@ -101,6 +99,10 @@ bool MonInterface::test()
 		parite();
 	}
 
+	if (donnee.typeTest == 3)
+	{
+		histo();
+	}
 	else
 	{
 		return false;
@@ -110,19 +112,19 @@ bool MonInterface::test()
 bool MonInterface::echo()
 {
 
-	donnee.retourSW = cfpga.LireSwitch();
-	donnee.valeurLD = cfpga.LireSwitch();
-	donnee.etatSW = cfpga.LireSwitch();
-	donnee.etatLD = cfpga.LireSwitch();
+	donnee.retourSW = 1;				//cfpga.LireSwitch();
+	donnee.valeurLD = 1;				//cfpga.LireSwitch();
+	donnee.etatSW = 65;					//cfpga.LireSwitch();
+	donnee.etatLD = 65;					//cfpga.LireSwitch();
 
 	return true;
 }
 
 bool MonInterface::parite()
 {
-	int valeurSW = cfpga.LireSwitch();
-	donnee.retourSW = cfpga.LireSwitch();
-	donnee.etatSW = cfpga.LireSwitch();
+	int valeurSW = 1;						//cfpga.LireSwitch();
+	donnee.retourSW = 1;						//cfpga.LireSwitch();
+	donnee.etatSW = 14;							//cfpga.LireSwitch();
 	int switchActive = 0;
 
 	if ((valeurSW & 128) == 128)
@@ -152,6 +154,52 @@ bool MonInterface::parite()
 	return true;
 }
 
+bool MonInterface::histo()
+{
+	int led = 0;
+	donnee.retourSW = 1;						//cfpga.LireSwitch();
+	donnee.etatSW = 14;							//cfpga.LireSwitch();
+	donnee.registreLD = 10;
+
+	if ((cfpga.LireSwitch() & 128) == 128)
+	{
+		led = 0xff;
+	}
+	else if ((cfpga.LireSwitch() & 64) == 64)
+	{
+		led = 0x7f;
+	}
+	else if ((cfpga.LireSwitch() & 32) == 32)
+	{
+		led = 0x3f;
+	}
+	else if ((cfpga.LireSwitch() & 16) == 16)
+	{
+		led = 0x1f;
+	}
+	else if ((cfpga.LireSwitch() & 8) == 8)
+	{
+		led = 0x0f;
+	}
+	else if ((cfpga.LireSwitch() & 4) == 4)
+	{
+		led = 0x07;
+	}
+	else if ((cfpga.LireSwitch() & 2) == 2)
+	{
+		led = 0x03;
+	}
+	else if ((cfpga.LireSwitch() & 1) == 1)
+	{
+		led = 0x01;
+	}
+
+	donnee.etatLD = led;
+	donnee.valeurLD = led;
+	donnee.etatLD = 0xff;
+
+	return true;
+}
 void MonInterface::arreter()
 {
 	sauvegarde = false;
@@ -161,23 +209,39 @@ void MonInterface::arreter()
 void MonInterface::demarrer()
 {
 	sauvegarde = true;
+	DonneesTest* ptrdonnee = &donnee;
 	cout << "demarrage" << endl;
 }
 
 void MonInterface::vider()
 {
+	resetArchive();
 	Archive.vider();
 	cout << "vider" << endl;
 }
 
 void MonInterface::modeFile()
 {
-	modedesauvegarde = QUEUE;
+	if(Archive.estvide())
+	{
+		Archive.setmode(QUEUE);
+	}
+	else
+	{
+	message("Veuillez vider le vecteur avant de changer le mode");
+	}
 }
 
 void MonInterface::modePile()
 {
-	modedesauvegarde = PILE;
+	if (Archive.estvide())
+	{
+		Archive.setmode(PILE);
+	}
+	else
+	{
+		message("Veuillez vider le vecteur avant de changer le mode");
+	}
 }
 
 void MonInterface::premier()
@@ -206,11 +270,11 @@ void MonInterface::suivant()
 
 /*void  MonInterface::sauvegarder(char* nomFichier)
 {
-	ofstream ofs(nomFichier);
-	ofs << Archive;
-	ofs.close();
-	cout << "Archive : ---- " << endl << Archive << endl;
-	cout << "Archive[0] : ---- " << endl << Archive[0] << endl;
+	ofstream myfile;
+	myfile.open(nomFichier, ios_base::out);
+	//ofstream ofs(nomFichier, ios_base::out);
+	myfile << Archive;
+	myfile.close();
 }*/
 
 void MonInterface::quitter()
